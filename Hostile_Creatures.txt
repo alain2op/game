@@ -1,0 +1,8 @@
+CaveSpider
+Magmarok
+GiantRat
+AngryBear
+Bear
+CowKing
+MadCow
+IceSpiderQueen
