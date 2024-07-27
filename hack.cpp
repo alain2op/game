@@ -7,8 +7,10 @@
 #include <vector>
 #include<cstring>
 #include "newlibGameLogic.h"
+#include<unistd.h>
 
 using namespace std;
+
 
 // bool a=false;
 void World::Tick(float f){
@@ -46,12 +48,14 @@ void Player::Chat(const char* message){
         float y = strtof(words[2], NULL);
         float z = strtof(words[3], NULL);
         this->SetPosition(pos + Vector3(x, y, z));
+        cout<<pos.x+x<<' '<<pos.y+y<<' '<<pos.z+z<<endl;
     } 
     else if (word_count == 4 && strcmp(words[0], "tp") == 0) {
         float x = strtof(words[1], NULL);
         float y = strtof(words[2], NULL);
         float z = strtof(words[3], NULL);
         this->SetPosition(Vector3(x, y, z));
+        cout<<x<<' '<<y<<' '<<z<<endl;
     }
     else if(word_count==1 && strcmp(words[0],"a")==0){
         ClientWorld* world = *((ClientWorld**)(dlsym(RTLD_NEXT, "GameWorld")));
@@ -80,4 +84,17 @@ void Player::Chat(const char* message){
         // }
         
     }   
+    else if(word_count==1 && strcmp(words[0],"mb")==0){
+        ClientWorld* world = *((ClientWorld**)(dlsym(RTLD_NEXT, "GameWorld")));
+        for(ActorRef<IActor> actor_s:world->m_actors){
+            Vector3 position=actor_s.m_object->GetLookPosition();
+            if(strcmp(actor_s.m_object->GetDisplayName(),"Bear")==0){
+                Actor* actor=(Actor*)actor_s.m_object;
+                actor->SetPosition(Vector3(position.x+100000,position.y+100000,position.z+1000000));
+            }
+            // printf("%s\n",actor_s.m_object->GetDisplayName());
+            // std::cout<<position.x<<'\t'<<position.y<<'\t'<<position.z<<endl;
+        }
+        // usleep(5*1000000);
+    }
 }
